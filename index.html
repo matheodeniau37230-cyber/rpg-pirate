@@ -1,1 +1,117 @@
 
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Les Mers Libres - RPG Pirate</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background: #102c3a;
+            color: white;
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+
+        header {
+            padding: 20px;
+            background: #071923;
+            border-bottom: 3px solid #e8b84d;
+        }
+
+        h1 {
+            margin: 0;
+            color: #e8b84d;
+        }
+
+        #monde {
+            position: relative;
+            height: 70vh;
+            min-height: 350px;
+            overflow: hidden;
+            background: linear-gradient(
+                #74c8e5 0%,
+                #2b9db7 65%,
+                #176b86 100%
+            );
+        }
+
+        #message {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 20px;
+            width: 85%;
+            max-width: 400px;
+            background: rgba(7, 25, 35, 0.9);
+            border: 2px solid #e8b84d;
+            border-radius: 12px;
+        }
+
+        button {
+            padding: 12px 20px;
+            background: #e8b84d;
+            color: #102c3a;
+            border: none;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #ffdc80;
+        }
+
+        footer {
+            padding: 15px;
+            color: #c5d5dc;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1>☠ LES MERS LIBRES ☠</h1>
+        <p>Ton aventure pirate commence ici !</p>
+    </header>
+
+    <main>
+        <div id="monde">
+            <div id="message">
+                <h2>Bienvenue, pirate !</h2>
+                <p id="texte">
+                    Une immense mer s'étend devant toi.
+                    Une île mystérieuse se trouve au loin.
+                </p>
+                <button onclick="commencer()">
+                    Commencer l'aventure
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        RPG Pirate — Version 0.1
+    </footer>
+
+    <script>
+        function commencer() {
+            document.getElementById("texte").textContent =
+                "Tu débarques sur l'île du Levant. Explore les environs : ton aventure ne fait que commencer !";
+
+            document.querySelector("button").textContent =
+                "Aventure commencée !";
+        }
+    </script>
+
+</body>
+</html>
+
