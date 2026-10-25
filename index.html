@@ -112,6 +112,323 @@
         }
     </script>
 
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LES MERS LIBRES</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;overflow:hidden;font-family:Arial,sans-serif;background:#67c9ee;color:white}
+#interface{position:fixed;inset:0;pointer-events:none}
+#titre{position:absolute;top:15px;left:18px;font-size:24px;font-weight:bold;text-shadow:2px 3px #17455c}
+#infos{position:absolute;top:60px;left:18px;background:#102f42cc;padding:12px 15px;border-radius:12px;line-height:1.7}
+#quete{position:absolute;top:15px;right:15px;background:#102f42dd;padding:14px;border-radius:12px;max-width:250px}
+#message{position:absolute;bottom:90px;left:50%;transform:translateX(-50%);background:#102f42e8;padding:12px 18px;border-radius:10px;text-align:center;max-width:90%;white-space:normal}
+#commandes{position:absolute;bottom:15px;left:50%;transform:translateX(-50%);background:#102f42cc;padding:10px 14px;border-radius:10px;text-align:center;font-size:13px;white-space:nowrap}
+button{pointer-events:auto;border:0;border-radius:8px;padding:9px 12px;font-weight:bold;cursor:pointer}
+#interagir{position:absolute;right:18px;bottom:85px;background:#ffd166;color:#173448}
+</style>
+</head>
+<body>
+<div id="interface">
+  <div id="titre">🏴‍☠️ LES MERS LIBRES</div>
+  <div id="infos">
+    Niveau : <span id="niveau">1</span><br>
+    Berrys : <span id="berry">0</span> ฿<br>
+    Expérience : <span id="xp">0</span>/10
+  </div>
+  <div id="quete">
+    <b>📜 Première aventure</b>
+    <p id="objectif">Explore l'île et récupère 5 pièces dorées.</p>
+    <div>Pièces : <span id="compteur">0</span>/5</div>
+  </div>
+  <div id="message">Bienvenue, pirate ! Explore l'île.</div>
+  <button id="interagir">Interagir</button>
+  <div id="commandes">Déplacement : ZQSD ou flèches · Espace : sauter · E : interagir</div>
+</div>
+
+<script type="importmap">
+{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js"}}
+</script>
+<script type="module">
+import * as THREE from 'three';
+
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0x78d6f5);
+scene.fog = new THREE.Fog(0x78d6f5, 35, 100);
+
+const camera = new THREE.PerspectiveCamera(
+  65, innerWidth / innerHeight, 0.1, 250
+);
+const renderer = new THREE.WebGLRenderer({antialias:true});
+renderer.setSize(innerWidth,innerHeight);
+renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+document.body.appendChild(renderer.domElement);
+
+scene.add(new THREE.HemisphereLight(0xc7f0ff,0x53633a,2));
+const soleil = new THREE.DirectionalLight(0xffffff,2.5);
+soleil.position.set(-15,25,10);
+soleil.castShadow = true;
+scene.add(soleil);
+
+function bloc(w,h,d,c,x,y,z){
+  const m=new THREE.Mesh(
+    new THREE.BoxGeometry(w,h,d),
+    new THREE.MeshStandardMaterial({color:c,roughness:0.9})
+  );
+  m.position.set(x,y,z);
+  m.castShadow=true;
+  m.receiveShadow=true;
+  scene.add(m);
+  return m;
+}
+
+// La mer
+const mer = new THREE.Mesh(
+  new THREE.PlaneGeometry(250,250),
+  new THREE.MeshStandardMaterial({color:0x168ec5,roughness:0.4})
+);
+mer.rotation.x=-Math.PI/2;
+mer.position.y=-0.6;
+scene.add(mer);
+
+// Une île de sable et d'herbe
+const sable = new THREE.Mesh(
+  new THREE.CylinderGeometry(19,21,1.2,48),
+  new THREE.MeshStandardMaterial({color:0xe8c47b})
+);
+sable.position.y=-0.15;
+sable.receiveShadow=true;
+scene.add(sable);
+
+const herbe = new THREE.Mesh(
+  new THREE.CylinderGeometry(16.8,18,0.35,48),
+  new THREE.MeshStandardMaterial({color:0x53a844})
+);
+herbe.position.y=0.55;
+herbe.receiveShadow=true;
+scene.add(herbe);
+
+// Une petite montagne
+const montagne = new THREE.Mesh(
+  new THREE.ConeGeometry(6,8,8),
+  new THREE.MeshStandardMaterial({color:0x63865b})
+);
+montagne.position.set(-7,4.4,-8);
+montagne.castShadow=true;
+scene.add(montagne);
+
+// Palmiers
+function palmier(x,z){
+  const tronc=new THREE.Mesh(
+    new THREE.CylinderGeometry(0.22,0.4,4,7),
+    new THREE.MeshStandardMaterial({color:0x85552c})
+  );
+  tronc.position.set(x,2.5,z);
+  tronc.rotation.z=0.08;
+  tronc.castShadow=true;
+  scene.add(tronc);
+
+  for(let i=0;i<7;i++){
+    const angle=i*Math.PI*2/7;
+    const feuille=new THREE.Mesh(
+      new THREE.ConeGeometry(0.55,3.3,5),
+      new THREE.MeshStandardMaterial({color:0x167a39})
+    );
+    feuille.position.set(
+      x+Math.cos(angle)*1.15,4.35,z+Math.sin(angle)*1.15
+    );
+    feuille.rotation.z=Math.cos(angle)*0.8;
+    feuille.rotation.x=Math.sin(angle)*0.8;
+    feuille.rotation.x+=Math.PI/2;
+    feuille.castShadow=true;
+    scene.add(feuille);
+  }
+}
+[
+  [-12,-3],[-13,5],[-5,11],[4,12],[12,7],
+  [13,-4],[7,-12],[-10,-10],[2,4]
+].forEach(p=>palmier(p[0],p[1]));
+
+// Rochers
+for(let i=0;i<13;i++){
+  const a=i*2.4, r=9+Math.random()*6;
+  const rocher=new THREE.Mesh(
+    new THREE.DodecahedronGeometry(0.5+Math.random()*0.7),
+    new THREE.MeshStandardMaterial({color:0x777c78})
+  );
+  rocher.position.set(Math.cos(a)*r,0.9,Math.sin(a)*r);
+  rocher.scale.y=0.7;
+  rocher.castShadow=true;
+  scene.add(rocher);
+}
+
+// Petit bateau près de la plage
+bloc(3,0.5,1.5,0x704522,4,0.15,17);
+bloc(0.18,3,0.18,0x674326,4,1.8,17);
+const voile=new THREE.Mesh(
+  new THREE.PlaneGeometry(1.8,2.2),
+  new THREE.MeshStandardMaterial({color:0xfff0c9,side:THREE.DoubleSide})
+);
+voile.position.set(4.9,2,17);
+scene.add(voile);
+
+// Personnage
+const joueur=new THREE.Group();
+scene.add(joueur);
+
+const peau=new THREE.MeshStandardMaterial({color:0xf0b47e});
+const tissu=new THREE.MeshStandardMaterial({color:0x2876d2});
+const pantalon=new THREE.MeshStandardMaterial({color:0x303b54});
+const noir=new THREE.MeshStandardMaterial({color:0x292522});
+
+function partie(geo,mat,x,y,z){
+  const m=new THREE.Mesh(geo,mat);
+  m.position.set(x,y,z);
+  m.castShadow=true;
+  joueur.add(m);
+  return m;
+}
+partie(new THREE.BoxGeometry(0.8,0.9,0.45),tissu,0,1.25,0);
+partie(new THREE.SphereGeometry(0.34,16,12),peau,0,1.95,0);
+partie(new THREE.BoxGeometry(0.95,0.18,0.9),
+  new THREE.MeshStandardMaterial({color:0xb93225}),0,2.2,0);
+partie(new THREE.BoxGeometry(0.4,0.12,0.42),noir,0,2.3,0);
+partie(new THREE.BoxGeometry(0.25,0.7,0.3),pantalon,-0.22,0.45,0);
+partie(new THREE.BoxGeometry(0.25,0.7,0.3),pantalon,0.22,0.45,0);
+partie(new THREE.BoxGeometry(0.22,0.65,0.25),peau,-0.52,1.3,0);
+partie(new THREE.BoxGeometry(0.22,0.65,0.25),peau,0.52,1.3,0);
+
+joueur.position.set(0,0,0);
+
+// Pièces à ramasser
+const pieces=[];
+const materiauOr=new THREE.MeshStandardMaterial({
+  color:0xffd700,metalness:0.65,roughness:0.25,
+  emissive:0x664400
+});
+for(let i=0;i<8;i++){
+  const a=i*2.4, r=4+Math.random()*9;
+  const piece=new THREE.Mesh(
+    new THREE.TorusGeometry(0.35,0.12,8,16),materiauOr
+  );
+  piece.position.set(Math.cos(a)*r,1,Math.sin(a)*r);
+  piece.castShadow=true;
+  scene.add(piece);
+  pieces.push(piece);
+}
+
+// Contrôles
+const touches={};
+addEventListener('keydown',e=>{
+  touches[e.key.toLowerCase()]=true;
+  if(['ArrowUp','ArrowDown','ArrowLeft','ArrowRight',' '].includes(e.key))
+    e.preventDefault();
+  if(e.key.toLowerCase()==='e') interagir();
+  if(e.code==='Space' && joueur.position.y===0) vitesseY=6;
+});
+addEventListener('keyup',e=>touches[e.key.toLowerCase()]=false);
+
+let vitesseY=0, berrys=0, xp=0, niveau=1, recoltees=0;
+let temps=0;
+const message=document.getElementById('message');
+
+function interagir(){
+  const distanceBateau=joueur.position.distanceTo(new THREE.Vector3(4,0,17));
+  if(distanceBateau<4){
+    message.textContent="⛵ Tu as trouvé ton bateau ! La prochaine étape sera de naviguer.";
+  } else if(recoltees>=5){
+    message.textContent="🏆 Quête accomplie ! Tu es prêt pour la prochaine aventure.";
+  } else {
+    message.textContent="Explore l'île et approche-toi des pièces dorées.";
+  }
+}
+document.getElementById('interagir').addEventListener('click',interagir);
+
+function anime(){
+  requestAnimationFrame(anime);
+  const dt=Math.min(clock.getDelta(),0.05);
+  temps+=dt;
+
+  let dx=0,dz=0;
+  if(touches['z']||touches['w']||touches['arrowup']) dz-=1;
+  if(touches['s']||touches['arrowdown']) dz+=1;
+  if(touches['q']||touches['a']||touches['arrowleft']) dx-=1;
+  if(touches['d']||touches['arrowright']) dx+=1;
+
+  const longueur=Math.hypot(dx,dz);
+  if(longueur>0){
+    dx/=longueur; dz/=longueur;
+    joueur.position.x+=dx*6*dt;
+    joueur.position.z+=dz*6*dt;
+    joueur.rotation.y=Math.atan2(dx,dz);
+  }
+
+  // Rester sur l'île
+  const distance=Math.hypot(joueur.position.x,joueur.position.z);
+  if(distance>15){
+    joueur.position.x*=15/distance;
+    joueur.position.z*=15/distance;
+  }
+
+  vitesseY-=16*dt;
+  joueur.position.y+=vitesseY*dt;
+  if(joueur.position.y<0){
+    joueur.position.y=0;
+    vitesseY=0;
+  }
+
+  pieces.forEach(piece=>{
+    if(!piece.visible)return;
+    piece.rotation.y+=dt*2;
+    piece.position.y=1+Math.sin(temps*3+piece.position.x)*0.12;
+    if(joueur.position.distanceTo(piece.position)<1.2){
+      piece.visible=false;
+      berrys+=10;
+      xp+=3;
+      recoltees++;
+      if(xp>=10){niveau++;xp-=10;}
+      document.getElementById('berry').textContent=berrys;
+      document.getElementById('xp').textContent=xp;
+      document.getElementById('niveau').textContent=niveau;
+      document.getElementById('compteur').textContent=Math.min(recoltees,5);
+      if(recoltees>=5){
+        document.getElementById('objectif').textContent="Quête terminée ! Approche-toi du bateau.";
+        message.textContent="🏆 Bravo ! Tu as récupéré assez de pièces. Trouve le bateau !";
+      }else{
+        message.textContent="🪙 +10 berrys ! Continue ton exploration.";
+      }
+    }
+  });
+
+  // Caméra derrière le personnage
+  const cible=new THREE.Vector3(
+    joueur.position.x, joueur.position.y+1, joueur.position.z
+  );
+  const decalage=new THREE.Vector3(0,7,10);
+  const positionCamera=cible.clone().add(decalage);
+  camera.position.lerp(positionCamera,0.08);
+  camera.lookAt(cible);
+
+  renderer.render(scene,camera);
+}
+const clock=new THREE.Clock();
+anime();
+
+addEventListener('resize',()=>{
+  camera.aspect=innerWidth/innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(innerWidth,innerHeight);
+});
+</script>
+</body>
+</html>
+
+    
 </body>
 </html>
 
