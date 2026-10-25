@@ -2,151 +2,106 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Les Mers Libres - RPG Pirate</title>
-
-    <style>
-        * {
-            box-sizing: border-box;
-        }
-
-        body {
-            margin: 0;
-            background: #102c3a;
-            color: white;
-            font-family: Arial, sans-serif;
-            text-align: center;
-        }
-
-        header {
-            padding: 20px;
-            background: #071923;
-            border-bottom: 3px solid #e8b84d;
-        }
-
-        h1 {
-            margin: 0;
-            color: #e8b84d;
-        }
-
-        #monde {
-            position: relative;
-            height: 70vh;
-            min-height: 350px;
-            overflow: hidden;
-            background: linear-gradient(
-                #74c8e5 0%,
-                #2b9db7 65%,
-                #176b86 100%
-            );
-        }
-
-        #message {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            padding: 20px;
-            width: 85%;
-            max-width: 400px;
-            background: rgba(7, 25, 35, 0.9);
-            border: 2px solid #e8b84d;
-            border-radius: 12px;
-        }
-
-        button {
-            padding: 12px 20px;
-            background: #e8b84d;
-            color: #102c3a;
-            border: none;
-            border-radius: 6px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-
-        button:hover {
-            background: #ffdc80;
-        }
-
-        footer {
-            padding: 15px;
-            color: #c5d5dc;
-        }
-    </style>
-</head>
-
-<body>
-
-    <header>
-        <h1>☠ LES MERS LIBRES ☠</h1>
-        <p>Ton aventure pirate commence ici !</p>
-    </header>
-
-    <main>
-        <div id="monde">
-            <div id="message">
-                <h2>Bienvenue, pirate !</h2>
-                <p id="texte">
-                    Une immense mer s'étend devant toi.
-                    Une île mystérieuse se trouve au loin.
-                </p>
-                <button onclick="commencer()">
-                    Commencer l'aventure
-                </button>
-            </div>
-        </div>
-    </main>
-
-    <footer>
-        RPG Pirate — Version 0.1
-    </footer>
-
-    <script>
-        function commencer() {
-            document.getElementById("texte").textContent =
-                "Tu débarques sur l'île du Levant. Explore les environs : ton aventure ne fait que commencer !";
-
-            document.querySelector("button").textContent =
-                "Aventure commencée !";
-        }
-    </script>
-
-<!DOCTYPE html>
-<html lang="fr">
-<head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>LES MERS LIBRES</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>LES MERS LIBRES - RPG</title>
 <style>
 *{box-sizing:border-box}
-body{margin:0;overflow:hidden;font-family:Arial,sans-serif;background:#67c9ee;color:white}
-#interface{position:fixed;inset:0;pointer-events:none}
-#titre{position:absolute;top:15px;left:18px;font-size:24px;font-weight:bold;text-shadow:2px 3px #17455c}
-#infos{position:absolute;top:60px;left:18px;background:#102f42cc;padding:12px 15px;border-radius:12px;line-height:1.7}
-#quete{position:absolute;top:15px;right:15px;background:#102f42dd;padding:14px;border-radius:12px;max-width:250px}
-#message{position:absolute;bottom:90px;left:50%;transform:translateX(-50%);background:#102f42e8;padding:12px 18px;border-radius:10px;text-align:center;max-width:90%;white-space:normal}
-#commandes{position:absolute;bottom:15px;left:50%;transform:translateX(-50%);background:#102f42cc;padding:10px 14px;border-radius:10px;text-align:center;font-size:13px;white-space:nowrap}
-button{pointer-events:auto;border:0;border-radius:8px;padding:9px 12px;font-weight:bold;cursor:pointer}
-#interagir{position:absolute;right:18px;bottom:85px;background:#ffd166;color:#173448}
+body{margin:0;overflow:hidden;background:#168fc0;color:white;font-family:Arial,sans-serif}
+canvas{display:block}
+.panel{background:#10263be8;border:1px solid #ffffff30;border-radius:12px;padding:12px;backdrop-filter:blur(5px)}
+#brand{position:fixed;top:12px;left:12px;font-size:21px;font-weight:bold;text-shadow:2px 2px #142c40;pointer-events:none}
+#stats{position:fixed;top:48px;left:12px;width:220px;font-size:13px;line-height:1.7;pointer-events:none}
+.bar{height:9px;background:#343b49;border-radius:8px;overflow:hidden;margin:3px 0 7px}
+.fill{height:100%;width:100%;transition:width .15s}
+#hpfill{background:#ed4b55}
+#xpfill{background:#42d9ed}
+#quest{position:fixed;top:12px;right:12px;width:220px;font-size:13px;line-height:1.5;pointer-events:none}
+#message{position:fixed;top:44%;left:50%;transform:translate(-50%,-50%);padding:12px 18px;background:#10263be8;border-radius:10px;text-align:center;max-width:90%;pointer-events:none;opacity:0;transition:opacity .2s}
+#skills{position:fixed;bottom:15px;left:50%;transform:translateX(-50%);display:flex;gap:7px;align-items:center}
+button{border:1px solid #ffffff45;background:#203d57;color:white;padding:11px 12px;border-radius:10px;font-weight:bold;cursor:pointer;touch-action:manipulation}
+button:active{transform:scale(.95);background:#376382}
+.skill{min-width:69px;font-size:12px}
+.skill strong{display:block;font-size:15px;margin-bottom:4px}
+#attack{background:#b94738}
+#fruit{background:#6b48a7}
+#haki{background:#3158a0}
+#dodge{background:#287a80}
+#potion{background:#28724d}
+#equipment{position:fixed;right:12px;bottom:15px}
+#movement{position:fixed;left:12px;bottom:15px;display:grid;grid-template-columns:repeat(3,44px);grid-template-rows:repeat(2,44px);gap:4px}
+#movement button{padding:0;font-size:18px;background:#173750cc}
+#up{grid-column:2}
+#left{grid-column:1;grid-row:2}
+#down{grid-column:2;grid-row:2}
+#right{grid-column:3;grid-row:2}
+#hint{position:fixed;bottom:112px;left:50%;transform:translateX(-50%);font-size:12px;text-shadow:1px 1px #123;white-space:nowrap;pointer-events:none}
+#panelEquipment{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);width:min(340px,90vw);display:none;z-index:5}
+#panelEquipment button{margin-top:8px;width:100%}
+@media(max-width:650px){
+ #brand{font-size:16px}
+ #stats{top:42px;width:165px;padding:8px;font-size:11px}
+ #quest{width:155px;padding:8px;font-size:11px}
+ #skills{bottom:115px;gap:4px}
+ .skill{min-width:55px;padding:8px 5px;font-size:10px}
+ .skill strong{font-size:12px}
+ #equipment{right:10px;bottom:15px}
+ #movement{bottom:12px}
+ #hint{display:none}
+}
 </style>
 </head>
 <body>
-<div id="interface">
-  <div id="titre">🏴‍☠️ LES MERS LIBRES</div>
-  <div id="infos">
-    Niveau : <span id="niveau">1</span><br>
-    Berrys : <span id="berry">0</span> ฿<br>
-    Expérience : <span id="xp">0</span>/10
-  </div>
-  <div id="quete">
-    <b>📜 Première aventure</b>
-    <p id="objectif">Explore l'île et récupère 5 pièces dorées.</p>
-    <div>Pièces : <span id="compteur">0</span>/5</div>
-  </div>
-  <div id="message">Bienvenue, pirate ! Explore l'île.</div>
-  <button id="interagir">Interagir</button>
-  <div id="commandes">Déplacement : ZQSD ou flèches · Espace : sauter · E : interagir</div>
+<div id="brand">🏴‍☠️ LES MERS LIBRES</div>
+
+<div id="stats" class="panel">
+  <b id="playerName">Pirate débutant · Niveau 1</b>
+  <div>❤️ PV : <span id="hpText">100 / 100</span></div>
+  <div class="bar"><div id="hpfill" class="fill"></div></div>
+  <div>✨ EXP : <span id="xpText">0 / 30</span></div>
+  <div class="bar"><div id="xpfill" class="fill"></div></div>
+  <div>⚔️ Force : <span id="powerText">10</span> · 🛡️ Défense : <span id="defText">2</span></div>
+  <div>💰 Berrys : <span id="berryText">0</span></div>
+</div>
+
+<div id="quest" class="panel">
+  <b>📜 MISSION : PREMIÈRE PRIME</b>
+  <div id="questText">Vaincs 3 bandits de la plage.</div>
+  <div>Bandits vaincus : <b id="killsText">0 / 3</b></div>
+  <hr style="border-color:#ffffff30">
+  <div>🍈 Fruit : <span id="fruitText">Frappe des vents</span></div>
+  <div>⚡ Haki : <span id="hakiText">Disponible</span></div>
+</div>
+
+<div id="message"></div>
+
+<div id="hint">ZQSD / flèches : bouger · Souris : tourner la caméra · Clic : attaque · E : potion</div>
+
+<div id="movement">
+  <button id="up" data-key="w">▲</button>
+  <button id="left" data-key="a">◀</button>
+  <button id="down" data-key="s">▼</button>
+  <button id="right" data-key="d">▶</button>
+</div>
+
+<div id="skills">
+  <button class="skill" id="attack"><strong>⚔️</strong>Attaquer</button>
+  <button class="skill" id="fruit"><strong>🍈</strong>Fruit <span id="fruitCooldown"></span></button>
+  <button class="skill" id="haki"><strong>⚡</strong>Haki <span id="hakiCooldown"></span></button>
+  <button class="skill" id="dodge"><strong>💨</strong>Esquive</button>
+  <button class="skill" id="potion"><strong>🧪</strong>Soin (<span id="potions">3</span>)</button>
+</div>
+
+<button id="equipment">🎒 Équipement</button>
+
+<div id="panelEquipment" class="panel">
+  <h3>🎒 Équipement du pirate</h3>
+  <p>⚔️ Arme : <b id="weaponText">Sabre usé</b></p>
+  <p>🛡️ Défense : <b id="armorText">Vêtement de pirate</b></p>
+  <p>💰 Coût d'amélioration : 50 berrys</p>
+  <button id="upgrade">Améliorer le sabre (+5 force)</button>
+  <button id="closeEquipment">Fermer</button>
+  <p style="font-size:12px">Tes améliorations sont sauvegardées sur cet appareil.</p>
 </div>
 
 <script type="importmap">
@@ -155,280 +110,474 @@ button{pointer-events:auto;border:0;border-radius:8px;padding:9px 12px;font-weig
 <script type="module">
 import * as THREE from 'three';
 
+// ---------- SCÈNE 3D ----------
 const scene = new THREE.Scene();
-scene.background = new THREE.Color(0x78d6f5);
-scene.fog = new THREE.Fog(0x78d6f5, 35, 100);
+scene.background = new THREE.Color(0x82d9f2);
+scene.fog = new THREE.Fog(0x82d9f2, 38, 110);
 
-const camera = new THREE.PerspectiveCamera(
-  65, innerWidth / innerHeight, 0.1, 250
-);
+const camera = new THREE.PerspectiveCamera(65, innerWidth/innerHeight, 0.1, 250);
 const renderer = new THREE.WebGLRenderer({antialias:true});
 renderer.setSize(innerWidth,innerHeight);
-renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+renderer.setPixelRatio(Math.min(devicePixelRatio,1.7));
 renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-document.body.appendChild(renderer.domElement);
+document.body.prepend(renderer.domElement);
 
-scene.add(new THREE.HemisphereLight(0xc7f0ff,0x53633a,2));
-const soleil = new THREE.DirectionalLight(0xffffff,2.5);
-soleil.position.set(-15,25,10);
-soleil.castShadow = true;
-scene.add(soleil);
+scene.add(new THREE.HemisphereLight(0xd6f6ff,0x566043,2.1));
+const sun = new THREE.DirectionalLight(0xffffff,2.5);
+sun.position.set(-15,28,12);
+sun.castShadow=true;
+scene.add(sun);
 
-function bloc(w,h,d,c,x,y,z){
-  const m=new THREE.Mesh(
-    new THREE.BoxGeometry(w,h,d),
-    new THREE.MeshStandardMaterial({color:c,roughness:0.9})
+// Mer
+const ocean = new THREE.Mesh(
+ new THREE.PlaneGeometry(300,300),
+ new THREE.MeshStandardMaterial({color:0x168bbd,roughness:0.35})
+);
+ocean.rotation.x=-Math.PI/2;
+ocean.position.y=-0.8;
+scene.add(ocean);
+
+// Île
+const sand = new THREE.Mesh(
+ new THREE.CylinderGeometry(25,27,1.5,56),
+ new THREE.MeshStandardMaterial({color:0xe7c17a})
+);
+sand.position.y=-0.2;
+sand.receiveShadow=true;
+scene.add(sand);
+
+const grass = new THREE.Mesh(
+ new THREE.CylinderGeometry(22,24,0.35,56),
+ new THREE.MeshStandardMaterial({color:0x55a848})
+);
+grass.position.y=0.65;
+grass.receiveShadow=true;
+scene.add(grass);
+
+// Montagne
+const mountain = new THREE.Mesh(
+ new THREE.ConeGeometry(7,10,8),
+ new THREE.MeshStandardMaterial({color:0x687e58})
+);
+mountain.position.set(-10,5.5,-10);
+mountain.castShadow=true;
+scene.add(mountain);
+
+function makePalm(x,z){
+ const trunk=new THREE.Mesh(
+  new THREE.CylinderGeometry(.22,.4,4.2,7),
+  new THREE.MeshStandardMaterial({color:0x85532e})
+ );
+ trunk.position.set(x,2.7,z);
+ trunk.castShadow=true;
+ scene.add(trunk);
+ for(let i=0;i<7;i++){
+  const a=i*Math.PI*2/7;
+  const leaf=new THREE.Mesh(
+   new THREE.ConeGeometry(.55,3.3,5),
+   new THREE.MeshStandardMaterial({color:0x19763a})
   );
-  m.position.set(x,y,z);
-  m.castShadow=true;
-  m.receiveShadow=true;
-  scene.add(m);
-  return m;
+  leaf.position.set(x+Math.cos(a)*1.1,4.6,z+Math.sin(a)*1.1);
+  leaf.rotation.z=Math.cos(a)*.7;
+  leaf.rotation.x=Math.PI/2+Math.sin(a)*.7;
+  leaf.castShadow=true;
+  scene.add(leaf);
+ }
+}
+[[-17,-3],[-15,8],[-6,16],[5,16],[17,9],[17,-8],
+ [8,-17],[-12,-15],[1,7]].forEach(p=>makePalm(p[0],p[1]));
+
+for(let i=0;i<20;i++){
+ const a=i*2.4, r=12+Math.random()*9;
+ const rock=new THREE.Mesh(
+  new THREE.DodecahedronGeometry(.5+Math.random()*.7),
+  new THREE.MeshStandardMaterial({color:0x777c78})
+ );
+ rock.position.set(Math.cos(a)*r,.9,Math.sin(a)*r);
+ rock.scale.y=.7;
+ rock.castShadow=true;
+ scene.add(rock);
 }
 
-// La mer
-const mer = new THREE.Mesh(
-  new THREE.PlaneGeometry(250,250),
-  new THREE.MeshStandardMaterial({color:0x168ec5,roughness:0.4})
-);
-mer.rotation.x=-Math.PI/2;
-mer.position.y=-0.6;
-scene.add(mer);
-
-// Une île de sable et d'herbe
-const sable = new THREE.Mesh(
-  new THREE.CylinderGeometry(19,21,1.2,48),
-  new THREE.MeshStandardMaterial({color:0xe8c47b})
-);
-sable.position.y=-0.15;
-sable.receiveShadow=true;
-scene.add(sable);
-
-const herbe = new THREE.Mesh(
-  new THREE.CylinderGeometry(16.8,18,0.35,48),
-  new THREE.MeshStandardMaterial({color:0x53a844})
-);
-herbe.position.y=0.55;
-herbe.receiveShadow=true;
-scene.add(herbe);
-
-// Une petite montagne
-const montagne = new THREE.Mesh(
-  new THREE.ConeGeometry(6,8,8),
-  new THREE.MeshStandardMaterial({color:0x63865b})
-);
-montagne.position.set(-7,4.4,-8);
-montagne.castShadow=true;
-scene.add(montagne);
-
-// Palmiers
-function palmier(x,z){
-  const tronc=new THREE.Mesh(
-    new THREE.CylinderGeometry(0.22,0.4,4,7),
-    new THREE.MeshStandardMaterial({color:0x85552c})
-  );
-  tronc.position.set(x,2.5,z);
-  tronc.rotation.z=0.08;
-  tronc.castShadow=true;
-  scene.add(tronc);
-
-  for(let i=0;i<7;i++){
-    const angle=i*Math.PI*2/7;
-    const feuille=new THREE.Mesh(
-      new THREE.ConeGeometry(0.55,3.3,5),
-      new THREE.MeshStandardMaterial({color:0x167a39})
-    );
-    feuille.position.set(
-      x+Math.cos(angle)*1.15,4.35,z+Math.sin(angle)*1.15
-    );
-    feuille.rotation.z=Math.cos(angle)*0.8;
-    feuille.rotation.x=Math.sin(angle)*0.8;
-    feuille.rotation.x+=Math.PI/2;
-    feuille.castShadow=true;
-    scene.add(feuille);
-  }
+// Bateau décoratif
+function box(w,h,d,color,x,y,z){
+ const m=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),
+  new THREE.MeshStandardMaterial({color}));
+ m.position.set(x,y,z);m.castShadow=true;scene.add(m);return m;
 }
-[
-  [-12,-3],[-13,5],[-5,11],[4,12],[12,7],
-  [13,-4],[7,-12],[-10,-10],[2,4]
-].forEach(p=>palmier(p[0],p[1]));
+box(3,.5,1.5,0x704522,5,.1,22);
+box(.15,3,.15,0x55351f,5,1.8,22);
+const sail=new THREE.Mesh(new THREE.PlaneGeometry(1.7,2.2),
+ new THREE.MeshStandardMaterial({color:0xfff0c9,side:THREE.DoubleSide}));
+sail.position.set(5.8,2,22);scene.add(sail);
 
-// Rochers
-for(let i=0;i<13;i++){
-  const a=i*2.4, r=9+Math.random()*6;
-  const rocher=new THREE.Mesh(
-    new THREE.DodecahedronGeometry(0.5+Math.random()*0.7),
-    new THREE.MeshStandardMaterial({color:0x777c78})
-  );
-  rocher.position.set(Math.cos(a)*r,0.9,Math.sin(a)*r);
-  rocher.scale.y=0.7;
-  rocher.castShadow=true;
-  scene.add(rocher);
+// ---------- JOUEUR ----------
+const player=new THREE.Group();
+scene.add(player);
+const skin=new THREE.MeshStandardMaterial({color:0xf0b47e});
+const shirt=new THREE.MeshStandardMaterial({color:0x2876d2});
+const pants=new THREE.MeshStandardMaterial({color:0x303b54});
+const hatMat=new THREE.MeshStandardMaterial({color:0xb93225});
+function playerPart(geo,mat,x,y,z){
+ const m=new THREE.Mesh(geo,mat);
+ m.position.set(x,y,z);m.castShadow=true;player.add(m);return m;
+}
+playerPart(new THREE.BoxGeometry(.8,.9,.45),shirt,0,1.25,0);
+playerPart(new THREE.SphereGeometry(.34,16,12),skin,0,1.95,0);
+playerPart(new THREE.CylinderGeometry(.24,.24,.12,16),hatMat,0,2.28,0);
+playerPart(new THREE.CylinderGeometry(.45,.45,.06,16),hatMat,0,2.22,0);
+playerPart(new THREE.BoxGeometry(.25,.7,.3),pants,-.22,.45,0);
+playerPart(new THREE.BoxGeometry(.25,.7,.3),pants,.22,.45,0);
+playerPart(new THREE.BoxGeometry(.22,.65,.25),skin,-.52,1.3,0);
+playerPart(new THREE.BoxGeometry(.22,.65,.25),skin,.52,1.3,0);
+player.position.set(0,0,4);
+
+// Sabre visuel dans la main
+const sword=new THREE.Mesh(
+ new THREE.BoxGeometry(.09,.85,.12),
+ new THREE.MeshStandardMaterial({color:0xdde6ed,metalness:.7,roughness:.25})
+);
+sword.position.set(.62,1.25,.15);
+sword.rotation.z=-.35;
+player.add(sword);
+
+// ---------- ENNEMIS ----------
+const enemies=[];
+function spawnEnemy(x,z,index){
+ const group=new THREE.Group();
+ const red=new THREE.MeshStandardMaterial({color:0xa94336});
+ const dark=new THREE.MeshStandardMaterial({color:0x35313b});
+ const face=new THREE.MeshStandardMaterial({color:0xd9a078});
+ function part(geo,mat,y){
+  const m=new THREE.Mesh(geo,mat);m.position.y=y;m.castShadow=true;group.add(m);
+ }
+ part(new THREE.BoxGeometry(.8,1,.45),red,1.15);
+ part(new THREE.SphereGeometry(.32,12,10),face,1.85);
+ part(new THREE.BoxGeometry(.25,.65,.3),dark,.35);
+ const barBack=new THREE.Mesh(
+  new THREE.PlaneGeometry(1.1,.12),
+  new THREE.MeshBasicMaterial({color:0x242424,side:THREE.DoubleSide})
+ );
+ barBack.position.y=2.45;group.add(barBack);
+ const bar=new THREE.Mesh(
+  new THREE.PlaneGeometry(1.05,.08),
+  new THREE.MeshBasicMaterial({color:0xff4040,side:THREE.DoubleSide})
+ );
+ bar.position.set(0,2.45,.01);group.add(bar);
+ group.position.set(x,0,z);
+ scene.add(group);
+ enemies.push({group,hp:40+index*8,maxHp:40+index*8,bar,alive:true,
+  attackTimer:Math.random(),speed:1.2+Math.random()*.4});
+}
+for(let i=0;i<5;i++){
+ const a=i*Math.PI*2/5;
+ spawnEnemy(Math.cos(a)*13,Math.sin(a)*13, i);
 }
 
-// Petit bateau près de la plage
-bloc(3,0.5,1.5,0x704522,4,0.15,17);
-bloc(0.18,3,0.18,0x674326,4,1.8,17);
-const voile=new THREE.Mesh(
-  new THREE.PlaneGeometry(1.8,2.2),
-  new THREE.MeshStandardMaterial({color:0xfff0c9,side:THREE.DoubleSide})
-);
-voile.position.set(4.9,2,17);
-scene.add(voile);
-
-// Personnage
-const joueur=new THREE.Group();
-scene.add(joueur);
-
-const peau=new THREE.MeshStandardMaterial({color:0xf0b47e});
-const tissu=new THREE.MeshStandardMaterial({color:0x2876d2});
-const pantalon=new THREE.MeshStandardMaterial({color:0x303b54});
-const noir=new THREE.MeshStandardMaterial({color:0x292522});
-
-function partie(geo,mat,x,y,z){
-  const m=new THREE.Mesh(geo,mat);
-  m.position.set(x,y,z);
-  m.castShadow=true;
-  joueur.add(m);
-  return m;
-}
-partie(new THREE.BoxGeometry(0.8,0.9,0.45),tissu,0,1.25,0);
-partie(new THREE.SphereGeometry(0.34,16,12),peau,0,1.95,0);
-partie(new THREE.BoxGeometry(0.95,0.18,0.9),
-  new THREE.MeshStandardMaterial({color:0xb93225}),0,2.2,0);
-partie(new THREE.BoxGeometry(0.4,0.12,0.42),noir,0,2.3,0);
-partie(new THREE.BoxGeometry(0.25,0.7,0.3),pantalon,-0.22,0.45,0);
-partie(new THREE.BoxGeometry(0.25,0.7,0.3),pantalon,0.22,0.45,0);
-partie(new THREE.BoxGeometry(0.22,0.65,0.25),peau,-0.52,1.3,0);
-partie(new THREE.BoxGeometry(0.22,0.65,0.25),peau,0.52,1.3,0);
-
-joueur.position.set(0,0,0);
-
-// Pièces à ramasser
-const pieces=[];
-const materiauOr=new THREE.MeshStandardMaterial({
-  color:0xffd700,metalness:0.65,roughness:0.25,
-  emissive:0x664400
-});
-for(let i=0;i<8;i++){
-  const a=i*2.4, r=4+Math.random()*9;
-  const piece=new THREE.Mesh(
-    new THREE.TorusGeometry(0.35,0.12,8,16),materiauOr
-  );
-  piece.position.set(Math.cos(a)*r,1,Math.sin(a)*r);
-  piece.castShadow=true;
-  scene.add(piece);
-  pieces.push(piece);
+// ---------- SAUVEGARDE ----------
+const defaults={
+ level:1,xp:0,berries:0,kills:0,maxHp:100,hp:100,
+ power:10,defense:2,potions:3,weaponLevel:0,fruitReady:true,
+ hakiReady:true
+};
+let data={...defaults};
+try{
+ const saved=JSON.parse(localStorage.getItem('mersLibresSave')||'null');
+ if(saved) data={...defaults,...saved};
+}catch(e){}
+data.hp=Math.min(data.hp,data.maxHp);
+function save(){
+ try{localStorage.setItem('mersLibresSave',JSON.stringify(data));}catch(e){}
 }
 
-// Contrôles
-const touches={};
+// ---------- INTERFACE ----------
+const $=id=>document.getElementById(id);
+let messageTimer=0;
+function notify(text){
+ $('message').textContent=text;
+ $('message').style.opacity=1;
+ messageTimer=2.4;
+}
+function updateUI(){
+ $('playerName').textContent='Pirate · Niveau '+data.level;
+ $('hpText').textContent=Math.ceil(data.hp)+' / '+data.maxHp;
+ $('hpfill').style.width=Math.max(0,data.hp/data.maxHp*100)+'%';
+ $('xpText').textContent=data.xp+' / '+(data.level*30);
+ $('xpfill').style.width=(data.xp/(data.level*30)*100)+'%';
+ $('powerText').textContent=data.power;
+ $('defText').textContent=data.defense;
+ $('berryText').textContent=data.berries;
+ $('killsText').textContent=Math.min(data.kills,3)+' / 3';
+ $('potions').textContent=data.potions;
+ $('weaponText').textContent=data.weaponLevel?'Sabre renforcé +'+(data.weaponLevel*5):'Sabre usé';
+ $('armorText').textContent='Défense '+data.defense;
+ if(data.kills>=3)$('questText').textContent='Mission accomplie ! Explore l’île pour trouver d’autres ennemis.';
+ $('hakiText').textContent=hakiTime>0?'Actif !':hakiCooldown>0?'Recharge…':'Disponible';
+}
+function levelUp(){
+ data.level++;
+ data.maxHp+=15;
+ data.hp=data.maxHp;
+ data.power+=3;
+ data.defense+=1;
+ notify('⭐ NIVEAU '+data.level+' ! Tes statistiques augmentent.');
+}
+function gainXP(amount){
+ data.xp+=amount;
+ while(data.xp>=data.level*30){
+  data.xp-=data.level*30;
+  levelUp();
+ }
+}
+
+// ---------- COMBAT ----------
+let attackCooldown=0, fruitCooldown=0, hakiCooldown=0, hakiTime=0;
+let dodgeTime=0, invincible=0;
+let attackSwing=0;
+function nearestEnemy(range){
+ let best=null,bestD=range;
+ for(const e of enemies){
+  if(!e.alive)continue;
+  const d=e.group.position.distanceTo(player.position);
+  if(d<bestD){best=e;bestD=d;}
+ }
+ return best;
+}
+function damageEnemy(e,amount){
+ if(!e||!e.alive)return;
+ e.hp-=amount;
+ e.bar.scale.x=Math.max(0,e.hp/e.maxHp);
+ e.bar.position.x=-(1-Math.max(0,e.hp/e.maxHp))*0.52;
+ if(e.hp<=0){
+  e.alive=false;
+  scene.remove(e.group);
+  data.kills++;
+  data.berries+=15;
+  gainXP(15);
+  notify('🏴‍☠️ Ennemi vaincu ! +15 EXP · +15 berrys');
+  updateUI();save();
+  // Réapparition après un délai
+  setTimeout(()=>{
+   const a=Math.random()*Math.PI*2;
+   spawnEnemy(Math.cos(a)*(12+Math.random()*5),Math.sin(a)*(12+Math.random()*5),data.level);
+  },4500);
+ }
+}
+function attack(){
+ if(attackCooldown>0)return;
+ attackCooldown=.42;
+ attackSwing=.22;
+ const e=nearestEnemy(3.1);
+ if(e){
+  const bonus=hakiTime>0?1.8:1;
+  damageEnemy(e,Math.round(data.power*bonus));
+ }else{
+  notify('⚔️ Tu frappes dans le vide ! Approche-toi d’un ennemi.');
+ }
+}
+function fruitAttack(){
+ if(fruitCooldown>0)return;
+ fruitCooldown=5;
+ // Onde d'énergie autour du joueur
+ const wave=new THREE.Mesh(
+  new THREE.SphereGeometry(1,20,14),
+  new THREE.MeshBasicMaterial({color:0x66eaff,transparent:true,opacity:.55,wireframe:true})
+ );
+ wave.position.copy(player.position);
+ wave.position.y=1;
+ scene.add(wave);
+ let scale=1;
+ const grow=setInterval(()=>{
+  scale+=.65;wave.scale.setScalar(scale);
+  wave.material.opacity-=.09;
+  if(scale>5){clearInterval(grow);scene.remove(wave);wave.geometry.dispose();wave.material.dispose();}
+ },35);
+ for(const e of enemies){
+  if(e.alive&&e.group.position.distanceTo(player.position)<5)
+   damageEnemy(e,Math.round(data.power*2.2));
+ }
+ notify('🍈 Frappe des vents ! Onde de choc lancée.');
+}
+function activateHaki(){
+ if(hakiCooldown>0)return;
+ hakiCooldown=12;
+ hakiTime=5;
+ notify('⚡ Haki activé ! Tes attaques sont renforcées.');
+}
+function dodge(){
+ if(dodgeTime>0)return;
+ dodgeTime=.35;invincible=.55;
+ const forward=new THREE.Vector3(Math.sin(cameraYaw),0,Math.cos(cameraYaw));
+ player.position.addScaledVector(forward,-3);
+ player.position.x=THREE.MathUtils.clamp(player.position.x,-20,20);
+ player.position.z=THREE.MathUtils.clamp(player.position.z,-20,20);
+}
+function potion(){
+ if(data.potions<=0){notify('Tu n’as plus de potions.');return;}
+ if(data.hp>=data.maxHp){notify('Tes points de vie sont déjà au maximum.');return;}
+ data.potions--;
+ data.hp=Math.min(data.maxHp,data.hp+40);
+ notify('🧪 Potion utilisée : +40 PV');
+ updateUI();save();
+}
+$('attack').onclick=attack;
+$('fruit').onclick=fruitAttack;
+$('haki').onclick=activateHaki;
+$('dodge').onclick=dodge;
+$('potion').onclick=potion;
+$('equipment').onclick=()=>$('panelEquipment').style.display='block';
+$('closeEquipment').onclick=()=>$('panelEquipment').style.display='none';
+$('upgrade').onclick=()=>{
+ if(data.berries<50){notify('Il te faut 50 berrys pour améliorer ton sabre.');return;}
+ data.berries-=50;data.weaponLevel++;data.power+=5;
+ notify('⚔️ Sabre amélioré ! +5 force.');
+ updateUI();save();
+};
+
+// ---------- COMMANDES CLAVIER / SOURIS ----------
+const keys={};
 addEventListener('keydown',e=>{
-  touches[e.key.toLowerCase()]=true;
-  if(['ArrowUp','ArrowDown','ArrowLeft','ArrowRight',' '].includes(e.key))
-    e.preventDefault();
-  if(e.key.toLowerCase()==='e') interagir();
-  if(e.code==='Space' && joueur.position.y===0) vitesseY=6;
+ const k=e.key.toLowerCase();keys[k]=true;
+ if([' ','arrowup','arrowdown','arrowleft','arrowright'].includes(k))e.preventDefault();
+ if(k===' '&&!e.repeat)dodge();
+ if(k==='f'&&!e.repeat)fruitAttack();
+ if(k==='h'&&!e.repeat)activateHaki();
+ if(k==='e'&&!e.repeat)potion();
+ if(k==='j'&&!e.repeat)attack();
 });
-addEventListener('keyup',e=>touches[e.key.toLowerCase()]=false);
+addEventListener('keyup',e=>keys[e.key.toLowerCase()]=false);
 
-let vitesseY=0, berrys=0, xp=0, niveau=1, recoltees=0;
-let temps=0;
-const message=document.getElementById('message');
+document.querySelectorAll('[data-key]').forEach(btn=>{
+ const k=btn.dataset.key;
+ const down=e=>{e.preventDefault();keys[k]=true;};
+ const up=e=>{e.preventDefault();keys[k]=false;};
+ btn.addEventListener('pointerdown',down);
+ btn.addEventListener('pointerup',up);
+ btn.addEventListener('pointercancel',up);
+ btn.addEventListener('pointerleave',up);
+});
 
-function interagir(){
-  const distanceBateau=joueur.position.distanceTo(new THREE.Vector3(4,0,17));
-  if(distanceBateau<4){
-    message.textContent="⛵ Tu as trouvé ton bateau ! La prochaine étape sera de naviguer.";
-  } else if(recoltees>=5){
-    message.textContent="🏆 Quête accomplie ! Tu es prêt pour la prochaine aventure.";
-  } else {
-    message.textContent="Explore l'île et approche-toi des pièces dorées.";
-  }
-}
-document.getElementById('interagir').addEventListener('click',interagir);
+let cameraYaw=0, dragging=false,lastX=0;
+renderer.domElement.addEventListener('pointerdown',e=>{
+ if(e.pointerType==='mouse'){dragging=true;lastX=e.clientX;}
+});
+addEventListener('pointerup',()=>dragging=false);
+addEventListener('pointermove',e=>{
+ if(dragging){
+  cameraYaw-=(e.clientX-lastX)*.006;
+  lastX=e.clientX;
+ }
+});
 
-function anime(){
-  requestAnimationFrame(anime);
-  const dt=Math.min(clock.getDelta(),0.05);
-  temps+=dt;
-
-  let dx=0,dz=0;
-  if(touches['z']||touches['w']||touches['arrowup']) dz-=1;
-  if(touches['s']||touches['arrowdown']) dz+=1;
-  if(touches['q']||touches['a']||touches['arrowleft']) dx-=1;
-  if(touches['d']||touches['arrowright']) dx+=1;
-
-  const longueur=Math.hypot(dx,dz);
-  if(longueur>0){
-    dx/=longueur; dz/=longueur;
-    joueur.position.x+=dx*6*dt;
-    joueur.position.z+=dz*6*dt;
-    joueur.rotation.y=Math.atan2(dx,dz);
-  }
-
-  // Rester sur l'île
-  const distance=Math.hypot(joueur.position.x,joueur.position.z);
-  if(distance>15){
-    joueur.position.x*=15/distance;
-    joueur.position.z*=15/distance;
-  }
-
-  vitesseY-=16*dt;
-  joueur.position.y+=vitesseY*dt;
-  if(joueur.position.y<0){
-    joueur.position.y=0;
-    vitesseY=0;
-  }
-
-  pieces.forEach(piece=>{
-    if(!piece.visible)return;
-    piece.rotation.y+=dt*2;
-    piece.position.y=1+Math.sin(temps*3+piece.position.x)*0.12;
-    if(joueur.position.distanceTo(piece.position)<1.2){
-      piece.visible=false;
-      berrys+=10;
-      xp+=3;
-      recoltees++;
-      if(xp>=10){niveau++;xp-=10;}
-      document.getElementById('berry').textContent=berrys;
-      document.getElementById('xp').textContent=xp;
-      document.getElementById('niveau').textContent=niveau;
-      document.getElementById('compteur').textContent=Math.min(recoltees,5);
-      if(recoltees>=5){
-        document.getElementById('objectif').textContent="Quête terminée ! Approche-toi du bateau.";
-        message.textContent="🏆 Bravo ! Tu as récupéré assez de pièces. Trouve le bateau !";
-      }else{
-        message.textContent="🪙 +10 berrys ! Continue ton exploration.";
-      }
-    }
-  });
-
-  // Caméra derrière le personnage
-  const cible=new THREE.Vector3(
-    joueur.position.x, joueur.position.y+1, joueur.position.z
-  );
-  const decalage=new THREE.Vector3(0,7,10);
-  const positionCamera=cible.clone().add(decalage);
-  camera.position.lerp(positionCamera,0.08);
-  camera.lookAt(cible);
-
-  renderer.render(scene,camera);
-}
+// ---------- BOUCLE DU JEU ----------
 const clock=new THREE.Clock();
-anime();
+let elapsed=0;
+function animate(){
+ requestAnimationFrame(animate);
+ const dt=Math.min(clock.getDelta(),.05);
+ elapsed+=dt;
+
+ attackCooldown=Math.max(0,attackCooldown-dt);
+ fruitCooldown=Math.max(0,fruitCooldown-dt);
+ hakiCooldown=Math.max(0,hakiCooldown-dt);
+ hakiTime=Math.max(0,hakiTime-dt);
+ dodgeTime=Math.max(0,dodgeTime-dt);
+ invincible=Math.max(0,invincible-dt);
+ attackSwing=Math.max(0,attackSwing-dt);
+ messageTimer=Math.max(0,messageTimer-dt);
+ $('message').style.opacity=messageTimer>0?1:0;
+ $('fruitCooldown').textContent=fruitCooldown>0?Math.ceil(fruitCooldown)+'s':'';
+ $('hakiCooldown').textContent=hakiCooldown>0?Math.ceil(hakiCooldown)+'s':'';
+
+ // Déplacement par rapport à la caméra
+ let forward=0,side=0;
+ if(keys['z']||keys['w']||keys['arrowup'])forward+=1;
+ if(keys['s']||keys['arrowdown'])forward-=1;
+ if(keys['q']||keys['a']||keys['arrowleft'])side-=1;
+ if(keys['d']||keys['arrowright'])side+=1;
+ const moving=Math.hypot(forward,side)>0;
+ if(moving){
+  const len=Math.hypot(forward,side);forward/=len;side/=len;
+  const fx=-Math.sin(cameraYaw),fz=-Math.cos(cameraYaw);
+  const rx=Math.cos(cameraYaw),rz=-Math.sin(cameraYaw);
+  const dx=fx*forward+rx*side;
+  const dz=fz*forward+rz*side;
+  const speed=dodgeTime>0?15:6;
+  player.position.x+=dx*speed*dt;
+  player.position.z+=dz*speed*dt;
+  player.rotation.y=Math.atan2(dx,dz);
+ }
+ // Limite de l'île
+ const radius=Math.hypot(player.position.x,player.position.z);
+ if(radius>20.5){player.position.x*=20.5/radius;player.position.z*=20.5/radius;}
+
+ // Petite animation du sabre
+ sword.rotation.z=attackSwing>0?-.35+Math.sin(attackSwing*18)*1.1:-.35;
+ sword.position.x=attackSwing>0?.65:.62;
+
+ // Intelligence simple des ennemis
+ for(const e of enemies){
+  if(!e.alive)continue;
+  const dx=player.position.x-e.group.position.x;
+  const dz=player.position.z-e.group.position.z;
+  const dist=Math.hypot(dx,dz);
+  if(dist>1.65&&dist<22){
+   e.group.position.x+=(dx/dist)*e.speed*dt;
+   e.group.position.z+=(dz/dist)*e.speed*dt;
+   e.group.rotation.y=Math.atan2(dx,dz);
+  }else if(dist<=1.65){
+   e.attackTimer-=dt;
+   if(e.attackTimer<=0){
+    e.attackTimer=1.3;
+    if(invincible<=0){
+     const damage=Math.max(3,8+data.level-data.defense);
+     data.hp=Math.max(0,data.hp-damage);
+     notify('💥 Un bandit t’a touché ! -'+damage+' PV');
+     if(data.hp<=0){
+      data.hp=Math.ceil(data.maxHp*.5);
+      player.position.set(0,0,4);
+      notify('🏥 Tu as été secouru au village. Tu as perdu du temps, pas tes niveaux.');
+     }
+     updateUI();save();
+    }
+   }
+  }
+  // Barre de vie orientée vers la caméra
+  e.bar.parent.children.forEach(obj=>{
+   if(obj.isMesh&&obj.geometry.type==='PlaneGeometry')obj.lookAt(camera.position);
+  });
+ }
+
+ // Caméra à la troisième personne
+ const target=new THREE.Vector3(player.position.x,player.position.y+1.2,player.position.z);
+ const distance=7.5;
+ const desired=new THREE.Vector3(
+  target.x+Math.sin(cameraYaw)*distance,
+  target.y+3.2,
+  target.z+Math.cos(cameraYaw)*distance
+ );
+ camera.position.lerp(desired,1-Math.pow(.001,dt));
+ camera.lookAt(target);
+
+ // Ondulation visuelle de la mer
+ ocean.position.y=-.8+Math.sin(elapsed*.6)*.06;
+
+ renderer.render(scene,camera);
+}
+updateUI();
+camera.position.set(0,5,13);
+camera.lookAt(player.position);
+save();
+animate();
 
 addEventListener('resize',()=>{
-  camera.aspect=innerWidth/innerHeight;
-  camera.updateProjectionMatrix();
-  renderer.setSize(innerWidth,innerHeight);
+ camera.aspect=innerWidth/innerHeight;
+ camera.updateProjectionMatrix();
+ renderer.setSize(innerWidth,innerHeight);
 });
 </script>
 </body>
 </html>
 
-    
-</body>
-</html>
 
